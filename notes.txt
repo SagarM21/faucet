@@ -1,0 +1,7 @@
+web3.js: is a collection of libs that allow u to interact with a local or remote ethereum code.
+
+truffle migrate = when initially migrating, when u want to again migrate then truffle migrate --reset
+
+Access your instance method using web.js - 
+const instance = new web3.eth.Contract(Faucet.abi, "Contract address") // type the Contract name and the address of that
+const funds = await instance.methods.funds().call()
