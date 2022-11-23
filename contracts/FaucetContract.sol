@@ -9,4 +9,7 @@ contract Faucet{
    //External functions are part of the contract interface which means they can be called via contracts and other transactions
    receive() external payable{}
 
+    // Block info - 
+    // Nonce - a hash that when combined with the minHash proofs that
+    // the block has gone through the proof of work. 8 bytes => 64bits 
 }

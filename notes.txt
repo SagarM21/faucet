@@ -7,3 +7,5 @@ const instance = new web3.eth.Contract(Faucet.abi, "Contract address") // type t
 const funds = await instance.methods.funds().call()
 
 To send transaction: truffle console then web3.eth.sendTransaction({from: accounts[0], to: "address", value: "amount you need to send"})
+
+To get block details: web3.eth.getBlock("Block number")
