@@ -5,6 +5,8 @@ contract Faucet{
     // storage variables
     // uint public funds = 1000; // only positive values
    
+   // special functionn, its called when u make a transaction that doesn't specify function name to call
+   //External functions are part of the contract interface which means they can be called via contracts and other transactions
    receive() external payable{}
 
 }

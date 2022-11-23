@@ -5,3 +5,5 @@ truffle migrate = when initially migrating, when u want to again migrate then tr
 Access your instance method using web.js - 
 const instance = new web3.eth.Contract(Faucet.abi, "Contract address") // type the Contract name and the address of that
 const funds = await instance.methods.funds().call()
+
+To send transaction: truffle console then web3.eth.sendTransaction({from: accounts[0], to: "address", value: "amount you need to send"})
