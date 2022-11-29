@@ -1,3 +1,4 @@
+To deploy - const instance = await Faucet.deployed()
 web3.js: is a collection of libs that allow u to interact with a local or remote ethereum code.
 
 truffle migrate = when initially migrating, when u want to again migrate then truffle migrate --reset
