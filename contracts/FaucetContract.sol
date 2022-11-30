@@ -15,6 +15,9 @@ contract Faucet{
     funders.push(msg.sender);
    }
 
+    function getAllFunders() external view returns(address[] memory){
+        return funders;
+    }
    
     // pure, view - read-only call, no gas fee
     // view - it indicates that the function will not alter the storage state in any way
