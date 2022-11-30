@@ -10,7 +10,19 @@ contract Faucet{
    receive() external payable{}
    function addFunds() external payable {}
 
+   function justTesting() external pure returns(uint) {
+        return 2 + 2;
+   }
+
+    // pure, view - read-only call, no gas fee
+    // view - it indicates that the function will not alter the storage state in any way
+    // pure - even more strict, indicating that it wont even read the storage state.
+    
+    // Transactions (can generate state changes) and require gas fee, read only call, no gas fee
+
     // Block info - 
     // Nonce - a hash that when combined with the minHash proofs that
     // the block has gone through the proof of work. 8 bytes => 64bits 
 }
+
+// const instance = await Faucet.deployed()
