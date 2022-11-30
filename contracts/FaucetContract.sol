@@ -7,13 +7,15 @@ contract Faucet{
    
    // special functionn, its called when u make a transaction that doesn't specify function name to call
    //External functions are part of the contract interface which means they can be called via contracts and other transactions
+   
+   address [] public funders;
+   
    receive() external payable{}
-   function addFunds() external payable {}
-
-   function justTesting() external pure returns(uint) {
-        return 2 + 2;
+   function addFunds() external payable {
+    funders.push(msg.sender);
    }
 
+   
     // pure, view - read-only call, no gas fee
     // view - it indicates that the function will not alter the storage state in any way
     // pure - even more strict, indicating that it wont even read the storage state.
