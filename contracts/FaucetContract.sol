@@ -9,6 +9,9 @@ contract Faucet{
    //External functions are part of the contract interface which means they can be called via contracts and other transactions
    
    address [] public funders;
+
+   // private -> can be accessible only within the smart contract
+   // internal -> can be accessible within smart contract and also derived smart contract.
    
    receive() external payable{}
    function addFunds() external payable {
