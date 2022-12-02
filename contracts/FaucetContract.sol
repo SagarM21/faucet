@@ -8,23 +8,21 @@ contract Faucet{
    // special functionn, its called when u make a transaction that doesn't specify function name to call
    //External functions are part of the contract interface which means they can be called via contracts and other transactions
    
-   address [] public funders;
+   uint public numOfFunders;
+   mapping(uint => address)  private funders;
 
    // private -> can be accessible only within the smart contract
    // internal -> can be accessible within smart contract and also derived smart contract.
    
    receive() external payable{}
    function addFunds() external payable {
-    funders.push(msg.sender);
+    uint index = numOfFunders++;
+    funders[index] = msg.sender;
    }
 
-    function getAllFunders() public view returns(address[] memory){
-        return funders;
-    }
 
     function getFunderAtIndex(uint8 index) external view returns(address){
-        address[] memory _funders = getAllFunders();
-        return _funders[index];
+        return funders[index];
     }
    
     // pure, view - read-only call, no gas fee
@@ -39,3 +37,4 @@ contract Faucet{
 }
 
 // const instance = await Faucet.deployed()
+// instance.addFunds({from: accounts[0], value: "20000000"})
