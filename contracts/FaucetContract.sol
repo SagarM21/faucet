@@ -9,30 +9,21 @@ contract Faucet{
    //External functions are part of the contract interface which means they can be called via contracts and other transactions
    
    uint public numOfFunders;
-   mapping(uint => address)  private funders;
+   mapping(address => bool)  private funders;
 
    // private -> can be accessible only within the smart contract
    // internal -> can be accessible within smart contract and also derived smart contract.
    
    receive() external payable{}
    function addFunds() external payable {
-    uint index = numOfFunders++;
-    funders[index] = msg.sender;
+    address funder = msg.sender;
+    if(!funders[funder]){
+        numOfFunders++;
+        funders[funder] = true;
+    }
    }
 
-    function getAllFunders() external view returns(address[] memory){
-        address[] memory _funders = new address[](numOfFunders);
-
-        for(uint i=0;i<numOfFunders;i++){
-            _funders[i] = funders[i];
-        } 
-
-        return _funders;
-    }
-
-    function getFunderAtIndex(uint8 index) external view returns(address){
-        return funders[index];
-    }
+   
    
     // pure, view - read-only call, no gas fee
     // view - it indicates that the function will not alter the storage state in any way
