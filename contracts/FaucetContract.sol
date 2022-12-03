@@ -27,6 +27,13 @@ contract Faucet{
     }
    }
 
+   function withdraw(uint withdrawAmount) external {
+    if(withdrawAmount < 1000000000000000000){
+
+    payable(msg.sender).transfer(withdrawAmount);
+    }
+   }
+
     function getAllFunders() external view returns(address[] memory){
         address[] memory _funders = new address[](numOfFunders);
 
@@ -56,4 +63,4 @@ contract Faucet{
 // truffle migrate --reset
 // truffle console
 // const instance = await Faucet.deployed()
-// instance.addFunds({from: accounts[0], value: "20000000"})
+// instance.addFunds({from: accounts[0], value: "2000000000000000000"})
