@@ -12,6 +12,14 @@ contract Faucet{
    mapping(address => bool)  private funders;
    mapping(uint => address)  private lutFunders; // look up table funders
 
+   modifier limitWithdraw (uint withdrawAmount){
+    require(
+        withdrawAmount<= 100000000000000000, 
+        "Cannot withdraw more than 0.1 ether"
+    );
+    _;
+   }
+
    // private -> can be accessible only within the smart contract
    // internal -> can be accessible within smart contract and also derived smart contract.
    
@@ -27,8 +35,7 @@ contract Faucet{
     }
    }
 
-   function withdraw(uint withdrawAmount) external {
-    require(withdrawAmount<= 100000000000000000, "Cannot withdraw more than 0.1 ether");
+   function withdraw(uint withdrawAmount) external limitWithdraw(withdrawAmount) {
     payable(msg.sender).transfer(withdrawAmount);
    }
 
