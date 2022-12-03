@@ -9,8 +9,22 @@ contract Faucet{
    //External functions are part of the contract interface which means they can be called via contracts and other transactions
    
    uint public numOfFunders;
+   address public owner;
+
    mapping(address => bool)  private funders;
    mapping(uint => address)  private lutFunders; // look up table funders
+
+   constructor(){
+    owner = msg.sender;
+   } 
+
+   modifier onlyOwner {
+    require(
+        msg.sender == owner,
+        "Only owner can call this function"
+    );
+    _;
+   }
 
    modifier limitWithdraw (uint withdrawAmount){
     require(
@@ -24,6 +38,11 @@ contract Faucet{
    // internal -> can be accessible within smart contract and also derived smart contract.
    
    receive() external payable{}
+
+    function transferOwnership(address newOwner) external onlyOwner{
+        owner = newOwner;
+    }
+
    function addFunds() external payable {
     address funder = msg.sender;
 
@@ -33,6 +52,14 @@ contract Faucet{
         funders[funder] = true;
         lutFunders[index] = funder;
     }
+   }
+
+   function test1() external onlyOwner {
+    // some managing stuff that only admin should have access to
+   }
+
+   function test2() external onlyOwner {
+    // some managing stuff that only admin should have access to
    }
 
    function withdraw(uint withdrawAmount) external limitWithdraw(withdrawAmount) {
