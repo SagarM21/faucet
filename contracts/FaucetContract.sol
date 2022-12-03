@@ -1,7 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.4.22 <0.9.0;
 
-contract Faucet{
+import "./Owned.sol";
+
+// Faucet is inheriting Owned
+contract Faucet is Owned{
     // storage variables
     // uint public funds = 1000; // only positive values
    
@@ -9,22 +12,8 @@ contract Faucet{
    //External functions are part of the contract interface which means they can be called via contracts and other transactions
    
    uint public numOfFunders;
-   address public owner;
-
    mapping(address => bool)  private funders;
    mapping(uint => address)  private lutFunders; // look up table funders
-
-   constructor(){
-    owner = msg.sender;
-   } 
-
-   modifier onlyOwner {
-    require(
-        msg.sender == owner,
-        "Only owner can call this function"
-    );
-    _;
-   }
 
    modifier limitWithdraw (uint withdrawAmount){
     require(
