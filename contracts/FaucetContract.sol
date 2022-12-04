@@ -2,9 +2,10 @@
 pragma solidity >=0.4.22 <0.9.0;
 
 import "./Owned.sol";
+import "./Logger.sol";
 
 // Faucet is inheriting Owned
-contract Faucet is Owned{
+contract Faucet is Owned, Logger{
     // storage variables
     // uint public funds = 1000; // only positive values
    
@@ -25,8 +26,13 @@ contract Faucet is Owned{
 
    // private -> can be accessible only within the smart contract
    // internal -> can be accessible within smart contract and also derived smart contract.
+
+
    
    receive() external payable{}
+    function emitLog() public override pure returns(bytes32){
+        return "Hello World";
+    }
 
     function transferOwnership(address newOwner) external onlyOwner{
         owner = newOwner;
