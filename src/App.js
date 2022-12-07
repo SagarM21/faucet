@@ -2,6 +2,8 @@ import { useEffect } from "react";
 import "./App.css";
 import Web3 from "web3";
 import { useState } from "react";
+import detectEthereumProvider from "@metamask/detect-provider";
+
 function App() {
 	const [web3Api, setWeb3Api] = useState({
 		provider: null,
@@ -12,7 +14,17 @@ function App() {
 
 	useEffect(() => {
 		const loadProvider = async () => {
-			let provider = null;
+			const provider = await detectEthereumProvider();
+
+			if (provider) {
+				provider.request({ method: "eth_requestAccounts" });
+				setWeb3Api({
+					web3: new Web3(provider),
+					provider,
+				});
+			} else {
+				console.error("Please install metamask!");
+			}
 			// with metamask we have an access to window.ethereum & window.web3
 			// metamask injects a global API into website
 			// this API allows websites to request users, accounts, read data to blockchain, sign messages and transaction
@@ -21,24 +33,6 @@ function App() {
 			// console.log(window.ethereum);
 
 			// automatically connects to metamask
-			if (window.ethereum) {
-				provider = window.ethereum;
-
-				try {
-					await provider.request({ method: "eth_requestAccounts" });
-				} catch {
-					console.error("User denied account access.");
-				}
-			} else if (window.web3) {
-				provider = window.web3.currentProvider;
-			} else if (!process.env.production) {
-				provider = new Web3.loadProviders.HttpProvider("http://localhost:7545");
-			}
-
-			setWeb3Api({
-				web3: new Web3(provider),
-				provider,
-			});
 		};
 		loadProvider();
 	}, []);
