@@ -17,7 +17,7 @@ function App() {
 	const [balance, setBalance] = useState(null);
 	const [reload, setReload] = useState(false);
 
-	const reloadEffect = () => setReload(!reload);
+	const reloadEffect = useCallback(() => setReload(!reload), [reload]);
 
 	useEffect(() => {
 		const loadProvider = async () => {
@@ -72,7 +72,16 @@ function App() {
 			value: web3.utils.toWei("1", "ether"),
 		});
 		reloadEffect();
-	}, [web3Api, account]);
+	}, [web3Api, account, reloadEffect]);
+
+	const withdraw = useCallback(async () => {
+		const { contract, web3 } = web3Api;
+		const withdrawAmount = web3.utils.toWei("0.1", "ether"); // this withdrawAmt variable is coming from the contract
+		await contract.withdraw(withdrawAmount, {
+			from: account,
+		});
+		reloadEffect();
+	}, [web3Api, account, reloadEffect]);
 
 	return (
 		<>
@@ -102,7 +111,9 @@ function App() {
 					<button className='button mr-2  is-link' onClick={addFunds}>
 						Donate 1 eth
 					</button>
-					<button className='button is-primary'>Withdraw</button>
+					<button className='button is-primary' onClick={withdraw}>
+						Withdraw
+					</button>
 				</div>
 			</div>
 		</>
