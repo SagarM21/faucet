@@ -18,6 +18,9 @@ function App() {
 	const [reload, setReload] = useState(false);
 
 	const reloadEffect = useCallback(() => setReload(!reload), [reload]);
+	const setAccountListener = (provider) => {
+		provider.on("accountsChanged", (accounts) => setAccount(accounts[0])); // refer metamask docs
+	};
 
 	useEffect(() => {
 		const loadProvider = async () => {
@@ -25,6 +28,7 @@ function App() {
 			const contract = await loadContract("Faucet", provider);
 
 			if (provider) {
+				setAccountListener(provider);
 				// provider.request({ method: "eth_requestAccounts" }); // this will force u to login to metamask
 				setWeb3Api({
 					web3: new Web3(provider),
