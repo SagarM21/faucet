@@ -19,7 +19,14 @@ function App() {
 
 	const reloadEffect = useCallback(() => setReload(!reload), [reload]);
 	const setAccountListener = (provider) => {
-		provider.on("accountsChanged", (accounts) => setAccount(accounts[0])); // refer metamask docs
+		provider.on("accountsChanged", (_) => window.location.reload()); // refer metamask docs
+
+		provider._jsonRpcConnection.events.on("notification", (payload) => {
+			const { method } = payload;
+			if (method === "metamask_unlockStateChanged") {
+				setAccount(null);
+			}
+		});
 	};
 
 	useEffect(() => {
@@ -112,10 +119,18 @@ function App() {
 						Current Balance: <strong>{balance} </strong>ETH
 					</div>
 
-					<button className='button mr-2  is-link' onClick={addFunds}>
+					<button
+						className='button mr-2  is-link'
+						onClick={addFunds}
+						disabled={!account}
+					>
 						Donate 1 eth
 					</button>
-					<button className='button is-primary' onClick={withdraw}>
+					<button
+						className='button is-primary'
+						onClick={withdraw}
+						disabled={!account}
+					>
 						Withdraw
 					</button>
 				</div>
