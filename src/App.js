@@ -23,6 +23,7 @@ function App() {
 	const reloadEffect = useCallback(() => setReload(!reload), [reload]);
 	const setAccountListener = (provider) => {
 		provider.on("accountsChanged", (_) => window.location.reload()); // refer metamask docs
+		provider.on("chainChanged", (_) => window.location.reload()); // refer metamask docs
 
 		//* 2ND method of above line
 		// provider._jsonRpcConnection.events.on("notification", (payload) => {
@@ -165,7 +166,7 @@ function App() {
 						onClick={withdraw}
 						disabled={!canConnectToContract}
 					>
-						Withdraw
+						Withdraw 0.1 eth
 					</button>
 				</div>
 			</div>
