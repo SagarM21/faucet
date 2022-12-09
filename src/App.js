@@ -9,6 +9,7 @@ import { useCallback } from "react";
 function App() {
 	const [web3Api, setWeb3Api] = useState({
 		provider: null,
+		isProvidedLoaded: false,
 		web3: null,
 		contract: null,
 	});
@@ -43,8 +44,10 @@ function App() {
 					web3: new Web3(provider),
 					provider,
 					contract,
+					isProvidedLoaded: true,
 				});
 			} else {
+				setWeb3Api({ ...web3Api, isProvidedLoaded: true });
 				console.error("Please install metamask!");
 			}
 			// with metamask we have an access to window.ethereum & window.web3
@@ -100,37 +103,42 @@ function App() {
 		<>
 			<div className='faucet-wrapper'>
 				<div className='faucet'>
-					<div className='is-flex is-align-items-center'>
-						<span>
-							<strong className='mr-2'>Account: </strong>
-						</span>
-						{account ? (
-							<div>{account}</div>
-						) : !web3Api.provider ? (
-							<>
-								{" "}
-								<div className='notification is-warning is-size-6 is-rounded'>
-									Wallet is not detected!{" "}
-									<a
-										target='_blank'
-										href='https://docs.metamask.io'
-										className='is_block'
-									>
-										Install Metamask
-									</a>
-								</div>
-							</>
-						) : (
-							<button
-								className='button is-small'
-								onClick={() =>
-									web3Api.provider.request({ method: "eth_requestAccounts" })
-								}
-							>
-								Connect Wallet
-							</button>
-						)}
-					</div>
+					{web3Api.isProvidedLoaded ? (
+						<div className='is-flex is-align-items-center'>
+							<span>
+								<strong className='mr-2'>Account: </strong>
+							</span>
+							{account ? (
+								<div>{account}</div>
+							) : !web3Api.provider ? (
+								<>
+									{" "}
+									<div className='notification is-warning is-size-6 is-rounded'>
+										Wallet is not detected!{" "}
+										<a
+											target='_blank'
+											href='https://docs.metamask.io'
+											className='is_block'
+										>
+											Install Metamask
+										</a>
+									</div>
+								</>
+							) : (
+								<button
+									className='button is-small'
+									onClick={() =>
+										web3Api.provider.request({ method: "eth_requestAccounts" })
+									}
+								>
+									Connect Wallet
+								</button>
+							)}
+						</div>
+					) : (
+						<span>Looking for web3...</span>
+					)}
+
 					<div className='balance-view is-size-2 my-4'>
 						Current Balance: <strong>{balance} </strong>ETH
 					</div>
