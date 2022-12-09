@@ -47,7 +47,12 @@ function App() {
 					isProvidedLoaded: true,
 				});
 			} else {
-				setWeb3Api({ ...web3Api, isProvidedLoaded: true });
+				setWeb3Api((api) => {
+					return {
+						...api,
+						isProvidedLoaded: true,
+					};
+				});
 				console.error("Please install metamask!");
 			}
 			// with metamask we have an access to window.ethereum & window.web3
@@ -119,6 +124,7 @@ function App() {
 											target='_blank'
 											href='https://docs.metamask.io'
 											className='is_block'
+											rel='noreferrer'
 										>
 											Install Metamask
 										</a>
