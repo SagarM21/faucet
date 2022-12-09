@@ -18,6 +18,8 @@ function App() {
 	const [balance, setBalance] = useState(null);
 	const [reload, setReload] = useState(false);
 
+	const canConnectToContract = account && web3Api.contract;
+
 	const reloadEffect = useCallback(() => setReload(!reload), [reload]);
 	const setAccountListener = (provider) => {
 		provider.on("accountsChanged", (_) => window.location.reload()); // refer metamask docs
@@ -148,18 +150,20 @@ function App() {
 					<div className='balance-view is-size-2 my-4'>
 						Current Balance: <strong>{balance} </strong>ETH
 					</div>
-
+					{!canConnectToContract && (
+						<i className='is-block'>Connect to Ganache</i>
+					)}
 					<button
 						className='button mr-2  is-link'
 						onClick={addFunds}
-						disabled={!account}
+						disabled={!canConnectToContract}
 					>
 						Donate 1 eth
 					</button>
 					<button
 						className='button is-primary'
 						onClick={withdraw}
-						disabled={!account}
+						disabled={!canConnectToContract}
 					>
 						Withdraw
 					</button>
